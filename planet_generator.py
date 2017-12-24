@@ -104,6 +104,12 @@ def randomCircles(x, y, rMax, planet):
         circ_handle = drawCircle(x + delta_x, y + delta_y, r_circle, circ_color)
         circles.append(circ_handle)
 
+def drawPlanet(x, y, planet):
+    '''This function draws the planet including the background, land/water,
+    vegetation, clouds, etc.'''
+    drawCircle(planet_x, planet_y, planet_r, 'RoyalBlue3')
+    
+
 def polarCaps(x, y, r, planet):
     ''' This function takes a planet and generates the polar caps of the
     planet.'''
@@ -122,9 +128,8 @@ if __name__ == '__main__':
     planet_x = 750
     planet_y = 250
     planet_r = 200
-    drawCircle(planet_x, planet_y, planet_r, 'RoyalBlue3')
     
-    planet1 = Planets('NO')
+    planet1 = Planets('Yavin5')
     canvas.create_text(200, 175, text = str(planet1),\
                        fill = 'pale turquoise',\
                        font = font.Font(family = 'Copperplate Gothic Bold',\
