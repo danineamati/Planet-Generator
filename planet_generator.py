@@ -61,6 +61,9 @@ class Planets:
         return Planet_str
                                        
 class Clouds:
+    ''' This class generates the atmosphere of the planet.'''
+    def __init__(self, planet):
+        pass
     
 
 def drawCircle(x, y, r, color):
