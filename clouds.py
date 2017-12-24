@@ -16,7 +16,7 @@ class Clouds:
         self.rect_width = planet.radius / 1.5
         self.rect_height = planet.radius / 5
         self.endcirc_radius = self.rect_height / 2
-        self.color = "#E5E7E9"
+        self.color = "#CFD8DC"
         self.max_cloud_lat = 0.75 * planet.radius
         self.min_cloud_lat = -(0.75 * planet.radius)
         

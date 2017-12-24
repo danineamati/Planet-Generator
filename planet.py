@@ -107,7 +107,7 @@ class Planets:
     def drawPlanet(self, x, y, planet):
         '''This function draws the planet including the background, land/water,
         vegetation, clouds, etc.'''
-        Land_color = 'NavajoWhite2'
+        Land_color = '#4E342E'
         Water_color = 'RoyalBlue3'
         
         if self.surf_water < 0.5:
@@ -133,5 +133,26 @@ class Planets:
     def polarCaps(self, planet_x, planet_y):
         ''' This function takes a planet and generates the polar caps of the
         planet.'''
-        planet_north = planet_x
-        pass
+        planet_north = planet_y - self.radius
+        planet_south = planet_y + self.radius
+
+        caps_width = self.radius * 0.3
+
+        x_ratio = 0.48
+        x1 = planet_x - self.radius * x_ratio
+        x2 = planet_x + self.radius * x_ratio
+
+        caps_color = '#D6EAF8'
+        # Make North Pole
+        self.canvas.create_oval(x1, planet_north,\
+                                x2, planet_north + caps_width,\
+                                fill = caps_color, outline = caps_color)
+
+        ratio = 1.5
+        x3 = planet_x + self.radius * x_ratio / ratio
+        x4 = planet_x - self.radius * x_ratio / ratio
+        # Make South Pole
+        self.canvas.create_oval(x3, planet_south - caps_width / 2,\
+                                x4, planet_south,\
+                                fill = caps_color, outline = caps_color)
+        

@@ -21,6 +21,7 @@ if __name__ == '__main__':
     planet1 = Planets('Vayyama', canvas)
     planet1.writePlanetSpecs(planet1)
     planet1.drawPlanet(planet_x, planet_y, planet1)
+    planet1.polarCaps(planet_x, planet_y)
 
     cloud = Clouds(planet1, planet_x, planet_y, canvas)
     cloud.manyClouds()
