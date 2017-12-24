@@ -133,5 +133,5 @@ class Planets:
     def polarCaps(self, planet_x, planet_y):
         ''' This function takes a planet and generates the polar caps of the
         planet.'''
-        # planet_north = 
+        planet_north = planet_x
         pass
