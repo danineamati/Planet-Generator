@@ -66,7 +66,14 @@ class Clouds:
         self.rect_width = planet.radius
         self.rect_height = planet.radius / 5
         self.endcirc_radius = self.rect_height / 2
+        self.color = "#F8F9F9"
         
+    def drawClouds(self, x, y):
+        create.create_rectangle((x - self.rect_width / 2),\
+                                (y - self.rect_height / 2),\
+                                (x + self.rect_width / 2),\
+                                (y + self.rect_height / 2), fill = self.color,\
+                                outline = self.color)
     
 
 def drawCircle(x, y, r, color):
