@@ -60,7 +60,9 @@ class Planets:
                                    self.tech)
         return Planet_str
                                        
-        
+class Clouds:
+    
+
 def drawCircle(x, y, r, color):
     ''' This function will draw a circle on the canvas. The center is at x, y
     and the r is the radius. There is also a color argument the determines the
