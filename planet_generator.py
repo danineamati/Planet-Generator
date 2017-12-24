@@ -63,7 +63,10 @@ class Planets:
 class Clouds:
     ''' This class generates the atmosphere of the planet.'''
     def __init__(self, planet):
-        pass
+        self.rect_width = planet.radius
+        self.rect_height = planet.radius / 5
+        self.endcirc_radius = self.rect_height / 2
+        
     
 
 def drawCircle(x, y, r, color):
