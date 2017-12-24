@@ -3,11 +3,56 @@ from tkinter import font
 import random
 import math
 
+
+def drawCircle(x, y, r, color):
+    ''' This function will draw a circle on the canvas. The center is at x, y
+    and the r is the radius. There is also a color argument the determines the
+    color of the circle.
+    The function returns the handle of the circle object.'''
+    circle = canvas.create_oval(x - r, y - r, x + r, y + r,\
+                                fill = color, outline = color)
+    circles.append(circle)
+    return circle
+
+def randomCircles(x, y, rMax, planet, back_color):
+    ''' This function creates random circles at random locations on the planet
+    of designated color'''
+    vege_color = {
+            'Carnivorus Plants' : 'medium aquamarine',
+            'Tentacles' : 'indian red',
+            'Metal Trees' : '#979A9A',
+            'Organic Spikes' : 'dark olive green',
+            'Giant Lilypads' : 'dark sea green',
+            'Trees' : 'dark green'                        
+    }
+    
+    # Generates an integer number of circles based on planet sea level
+    # 33 is completly arbitrary
+    numCircles = int((1 - planet.surf_water) * 33)
+    vege_specific = vege_color[planet.vege_type]
+
+    for circle in range(numCircles):
+        r_circle = random.randint(10, int(0.5 * rMax))
+        # r_1 is the distance from the center of the planet to the center of
+        # the randomly generated circle
+        r_1 = (random.random() + 0.25) * (rMax - r_circle - (0.25 * (rMax - r_circle)))
+        theta = random.random() * (2 * math.pi)
+        delta_x = r_1 * math.cos(theta)
+        delta_y = -r_1 * math.sin(theta)
+        circ_color = back_color
+        if (random.random() * planet.vege_amt) < (planet.vege_amt * planet.vege_amt):
+            circ_color = vege_specific
+            
+        circ_handle = drawCircle(x + delta_x, y + delta_y, r_circle, circ_color)
+        circles.append(circ_handle)
+
 class Planets:
     ''' This class generates a planet based on random factors.'''
     def __init__(self, name):
         ''' Creates a planet from randomly determined features.'''
         self.name = name
+        #self.planet_x = planet_x
+        #self.planet_y = planet_y
         self.radius = random.randint(50, 250)
         
         self.day = random.random() * 30
@@ -59,6 +104,38 @@ class Planets:
                                    '%.2f' % self.urban,\
                                    self.tech)
         return Planet_str
+    
+    def drawPlanet(self, x, y, planet):
+        '''This function draws the planet including the background, land/water,
+        vegetation, clouds, etc.'''
+        Land_color = 'NavajoWhite2'
+        Water_color = 'RoyalBlue3'
+        
+        if self.surf_water < 0.5:
+            back_color = Land_color
+            obj_color = Water_color
+        else:
+            back_color = Water_color
+            obj_color = Land_color
+
+        # Now we can draw the out part of the planet
+        drawCircle(planet_x, planet_y, planet.radius, back_color)
+
+        # Now we draw the random features atop the planet surface
+        randomCircles(x, y, planet.radius, planet, obj_color)
+    
+    def writePlanetSpecs(self, Planet):
+        ''' This function writes the planet information to the screen. '''
+        canvas.create_text(200, 175, text = str(Planet),\
+                           fill = 'pale turquoise',\
+                           font = font.Font(family = 'Copperplate Gothic Bold',\
+                                            size = 11))
+
+    def polarCaps(self, planet_x, planet_y):
+        ''' This function takes a planet and generates the polar caps of the
+        planet.'''
+        # planet_north = 
+        pass
                                        
 class Clouds:
     ''' This class generates the atmosphere of the planet.'''
@@ -76,78 +153,7 @@ class Clouds:
                                 outline = self.color)
     
 
-def drawCircle(x, y, r, color):
-    ''' This function will draw a circle on the canvas. The center is at x, y
-    and the r is the radius. There is also a color argument the determines the
-    color of the circle.
-    The function returns the handle of the circle object.'''
-    circle = canvas.create_oval(x - r, y - r, x + r, y + r,\
-                                fill = color, outline = color)
-    circles.append(circle)
-    return circle
 
-def randomCircles(x, y, rMax, planet, back_color):
-    ''' This function creates random circles at random locations on the planet
-    of designated color'''
-    vege_color = {
-            'Carnivorus Plants' : 'medium aquamarine',
-            'Tentacles' : 'indian red',
-            'Metal Trees' : '#979A9A',
-            'Organic Spikes' : 'dark olive green',
-            'Giant Lilypads' : 'dark sea green',
-            'Trees' : 'dark green'                        
-    }
-    
-    # Generates an integer number of circles based on planet sea level
-    # 33 is completly arbitrary
-    numCircles = int((1 - planet.surf_water) * 33)
-    vege_specific = vege_color[planet.vege_type]
-
-    for circle in range(numCircles):
-        r_circle = random.randint(10, int(0.5 * rMax))
-        # r_1 is the distance from the center of the planet to the center of
-        # the randomly generated circle
-        r_1 = (random.random() + 0.25) * (rMax - r_circle - (0.25 * (rMax - r_circle)))
-        theta = random.random() * (2 * math.pi)
-        delta_x = r_1 * math.cos(theta)
-        delta_y = -r_1 * math.sin(theta)
-        circ_color = back_color
-        if (random.random() * planet.vege_amt) < (planet.vege_amt * planet.vege_amt):
-            circ_color = vege_specific
-            
-        circ_handle = drawCircle(x + delta_x, y + delta_y, r_circle, circ_color)
-        circles.append(circ_handle)
-
-def drawPlanet(x, y, planet):
-    '''This function draws the planet including the background, land/water,
-    vegetation, clouds, etc.'''
-    Land_color = 'NavajoWhite2'
-    Water_color = 'RoyalBlue3'
-    
-    if planet.surf_water < 0.5:
-        back_color = Land_color
-        obj_color = Water_color
-    else:
-        back_color = Water_color
-        obj_color = Land_color
-
-    # Now we can draw the out part of the planet
-    drawCircle(planet_x, planet_y, planet.radius, back_color)
-
-    # Now we draw the random features atop the planet surface
-    randomCircles(x, y, planet.radius, planet, obj_color)
-    
-def writePlanetSpecs(Planet):
-    ''' This function writes the planet information to the screen. '''
-    canvas.create_text(200, 175, text = str(Planet),\
-                       fill = 'pale turquoise',\
-                       font = font.Font(family = 'Copperplate Gothic Bold',\
-                                        size = 11))
-
-def polarCaps(x, y, r, planet):
-    ''' This function takes a planet and generates the polar caps of the
-    planet.'''
-    pass
 
 if __name__ == '__main__':
     root = Tk()
@@ -163,8 +169,8 @@ if __name__ == '__main__':
     planet_y = 250
     
     planet1 = Planets('Yavin5')
-    writePlanetSpecs(planet1)
-    drawPlanet(planet_x, planet_y, planet1)
+    planet1.writePlanetSpecs(planet1)
+    planet1.drawPlanet(planet_x, planet_y, planet1)
 
     #print(font.families())
     root.bind('<q>', quit)
