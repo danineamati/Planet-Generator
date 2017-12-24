@@ -102,7 +102,7 @@ def randomCircles(x, y, rMax, planet, back_color):
         delta_x = r_1 * math.cos(theta)
         delta_y = -r_1 * math.sin(theta)
         circ_color = back_color
-        if (random.random() * planet.vege_amt) > (planet.vege_amt * planet.vege_amt):
+        if (random.random() * planet.vege_amt) < (planet.vege_amt * planet.vege_amt):
             circ_color = vege_specific
             
         circ_handle = drawCircle(x + delta_x, y + delta_y, r_circle, circ_color)
@@ -116,16 +116,23 @@ def drawPlanet(x, y, planet):
     
     if planet.surf_water < 0.5:
         back_color = Land_color
+        obj_color = Water_color
     else:
         back_color = Water_color
+        obj_color = Land_color
 
     # Now we can draw the out part of the planet
-    drawCircle(planet_x, planet_y, planet_r, back_color)
+    drawCircle(planet_x, planet_y, planet.radius, back_color)
 
     # Now we draw the random features atop the planet surface
-    randomCircles(x, y, rMax, planet, back_color)
+    randomCircles(x, y, planet.radius, planet, obj_color)
     
-    
+def writePlanetSpecs(Planet):
+    ''' This function writes the planet information to the screen. '''
+    canvas.create_text(200, 175, text = str(Planet),\
+                       fill = 'pale turquoise',\
+                       font = font.Font(family = 'Copperplate Gothic Bold',\
+                                        size = 11))
 
 def polarCaps(x, y, r, planet):
     ''' This function takes a planet and generates the polar caps of the
@@ -144,14 +151,10 @@ if __name__ == '__main__':
     circles = []
     planet_x = 750
     planet_y = 250
-    planet_r = 200
     
     planet1 = Planets('Yavin5')
-    canvas.create_text(200, 175, text = str(planet1),\
-                       fill = 'pale turquoise',\
-                       font = font.Font(family = 'Copperplate Gothic Bold',\
-                                        size = 11))
-    randomCircles(planet_x, planet_y, planet_r, planet1)
+    writePlanetSpecs(planet1)
+    drawPlanet(planet_x, planet_y, planet1)
 
     #print(font.families())
     root.bind('<q>', quit)
