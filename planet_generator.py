@@ -18,12 +18,12 @@ if __name__ == '__main__':
     planet_x = 750
     planet_y = 250
     
-    planet1 = Planets('Yavin5', canvas)
+    planet1 = Planets('Vayyama', canvas)
     planet1.writePlanetSpecs(planet1)
     planet1.drawPlanet(planet_x, planet_y, planet1)
 
     cloud = Clouds(planet1, planet_x, planet_y, canvas)
-    cloud.drawClouds(500, 350)
+    cloud.manyClouds()
 
     #print(font.families())
     root.bind('<q>', quit)

@@ -27,7 +27,7 @@ def randomCircles(x, y, rMax, planet, back_color, canvas):
     
     # Generates an integer number of circles based on planet sea level
     # 33 is completly arbitrary
-    numCircles = int((1 - planet.surf_water) * 33)
+    numCircles = int((1 - planet.surf_water) * 10)
     vege_specific = vege_color[planet.vege_type]
 
     for circle in range(numCircles):
