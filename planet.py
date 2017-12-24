@@ -3,17 +3,17 @@ from tkinter import font
 import random
 import math
 
-def drawCircle(x, y, r, color):
+def drawCircle(x, y, r, color, canvas):
     ''' This function will draw a circle on the canvas. The center is at x, y
     and the r is the radius. There is also a color argument the determines the
     color of the circle.
     The function returns the handle of the circle object.'''
     circle = canvas.create_oval(x - r, y - r, x + r, y + r,\
                                 fill = color, outline = color)
-    circles.append(circle)
+    #circles.append(circle)
     return circle
 
-def randomCircles(x, y, rMax, planet, back_color):
+def randomCircles(x, y, rMax, planet, back_color, canvas):
     ''' This function creates random circles at random locations on the planet
     of designated color'''
     vege_color = {
@@ -42,16 +42,16 @@ def randomCircles(x, y, rMax, planet, back_color):
         if (random.random() * planet.vege_amt) < (planet.vege_amt * planet.vege_amt):
             circ_color = vege_specific
             
-        circ_handle = drawCircle(x + delta_x, y + delta_y, r_circle, circ_color)
-        circles.append(circ_handle)
+        circ_handle = drawCircle(x + delta_x, y + delta_y, r_circle,\
+                                 circ_color, canvas)
+        #circles.append(circ_handle)
 
 class Planets:
     ''' This class generates a planet based on random factors.'''
-    def __init__(self, name):
+    def __init__(self, name, canvas):
         ''' Creates a planet from randomly determined features.'''
         self.name = name
-        #self.planet_x = planet_x
-        #self.planet_y = planet_y
+        self.canvas = canvas
         self.radius = random.randint(50, 250)
         
         self.day = random.random() * 30
@@ -118,14 +118,14 @@ class Planets:
             obj_color = Land_color
 
         # Now we can draw the out part of the planet
-        drawCircle(planet_x, planet_y, planet.radius, back_color)
+        drawCircle(x, y, planet.radius, back_color, self.canvas)
 
         # Now we draw the random features atop the planet surface
-        randomCircles(x, y, planet.radius, planet, obj_color)
+        randomCircles(x, y, planet.radius, planet, obj_color, self.canvas)
     
     def writePlanetSpecs(self, Planet):
         ''' This function writes the planet information to the screen. '''
-        canvas.create_text(200, 175, text = str(Planet),\
+        self.canvas.create_text(200, 175, text = str(Planet),\
                            fill = 'pale turquoise',\
                            font = font.Font(family = 'Copperplate Gothic Bold',\
                                             size = 11))
