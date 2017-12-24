@@ -37,6 +37,11 @@ class Clouds:
                                 (y + self.rect_height / 2), fill = self.color,\
                                 outline = self.color)
         
+        drawCircle(x + self.rect_width / 2, y, self.endcirc_radius,\
+                        self.color, self.canvas)
+        drawCircle(x - self.rect_width / 2, y, self.endcirc_radius,\
+                        self.color, self.canvas)
+        
     def manyClouds(self):
         ''' Draws many clouds.'''
         numClouds = self.planet.surf_water * 10
