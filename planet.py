@@ -97,10 +97,10 @@ class Planets:
                                    '%.2f' % self.day,\
                                    '%.2f' % self.night,\
                                    '%.2f' % self.daynight,\
-                                   '%.2f' % self.surf_water,\
-                                   '%.2f' % self.vege_amt,\
+                                   '%.2f' % (self.surf_water * 100),\
+                                   '%.2f' % (self.vege_amt * 100),\
                                    self.vege_type,\
-                                   '%.2f' % self.urban,\
+                                   '%.2f' % (self.urban * 100),\
                                    self.tech)
         return Planet_str
     
