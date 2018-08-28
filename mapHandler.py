@@ -37,6 +37,8 @@ class mapHandler():
 
 		self.clock = pygame.time.Clock()
 
+		self.rectLists = []
+
 	def getBackRectDimensions(self):
 		'''Gets the dimensions such that the rectangle is at the center
 		of the screen.'''
@@ -94,8 +96,55 @@ class mapHandler():
 												(150, 150))
 		self.window.blit(self.compassImage, (0,0))
 
+	def drawRect(self, topLeft, bottomRight):
+		'''Draws a rectangle by defining the top left and bottom right 
+		corners.'''
+		# First determine the actual top left
+		if topLeft[0] > bottomRight[0]:
+			topLeft, bottomRight = bottomRight, topLeft
+
+		width = abs(topLeft[0] - bottomRight[0])
+		height = abs(topLeft[1] - bottomRight[1])
+		rect1 = pygame.draw.rect(self.window, black, 
+	            	 		(topLeft[0], topLeft[1],
+	            	 		width, height))
+
+		self.rectLists.append(rect1)
+		print(rect1.x, rect1.y)
+
+	def redrawAll(self):
+		'''Redraws necessary screen contents such as map, compass, 
+		and rectangles'''
+		self.updateBackgroundLoc()
+		
+		for rectKept in self.rectLists:
+			pygame.draw.rect(self.window, black, 
+	            	 		(rectKept.x, rectKept.y, 
+	            	 			rectKept.width, rectKept.height))
+		self.compass()
+
+	def inBox(self, pos):
+		'''Returns the first index that the coordinate (x, y) is in.'''
+		x, y = pos
+		for num, myRect in enumerate(self.rectLists):
+			if (x > myRect.x) and (x < myRect.x + myRect.width) and \
+				(y > myRect.y) and (y < myRect.y + myRect.height):
+				print("in box")
+				return num
+
+	def removeBox(self, pos):
+		'''Removes box from visible screen.'''
+		try:
+			num = self.inBox(pos)
+			self.rectLists.pop(num)
+		except TypeError as e:
+			print(e)
+
 	def gameLoop(self):
 	    end = False
+
+	    rectSet = False
+	    topLeft = (0, 0)
 
 	    while not end:
 	        for event in pygame.event.get():
@@ -110,7 +159,28 @@ class mapHandler():
 	                    quit()
 	                if event.key == pygame.K_r:
 	                	pygame.draw.rect(self.window,
-	                		black,(100,150,200,50))
+	                		black,(300,150,200,50))
+	                if event.key == pygame.K_c:
+	                	self.updateBackgroundLoc()
+	                	self.compass()
+	                if event.key == pygame.K_u:
+	                	self.redrawAll()
+	                if event.key == pygame.K_d:
+	                	pos = pygame.mouse.get_pos()
+	                	print(pos)
+	                	self.removeBox(pos)
+	                	self.redrawAll() 
+
+	            if event.type == pygame.MOUSEBUTTONDOWN:
+	            	pos = pygame.mouse.get_pos()
+	            	print(pos)
+	            	if rectSet:
+	            		self.drawRect(topLeft, pos)
+	            		rectSet = False
+	            		self.compass()
+	            	else:
+	            		topLeft = pos
+	            		rectSet = True
 
 	        pygame.display.update()
 	        self.clock.tick(60)
